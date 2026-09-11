@@ -1,0 +1,153 @@
+:root {
+  color-scheme: dark;
+
+  --font-ui:
+    'Inter', 'Avenir Next', 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-display:
+    'Fraunces', 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', 'URW Palladio L', Georgia,
+    serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+
+  --bg: #0f0d11;
+  --surface: #17151b;
+  --surface-2: #1e1b23;
+  --surface-3: #272129;
+  --border: #26222c;
+  --border-strong: #3b3543;
+  --text: #ece8e3;
+  --text-2: #a9a3ad;
+  --text-3: #847d8a;
+  --accent: #f2a15c;
+  --accent-2: #ef7a62;
+  --accent-ink: #211204;
+  --accent-soft: rgba(242, 161, 92, 0.16);
+  --accent-gradient: linear-gradient(135deg, #f2a15c, #ef7a62);
+  --focus-ring: rgba(242, 161, 92, 0.4);
+  --success: #4ec488;
+  --glow-hot: rgba(242, 161, 92, 0.08);
+  --glow-cool: rgba(122, 96, 186, 0.1);
+  --dot: rgba(255, 255, 255, 0.032);
+  --shadow-pop: 0 24px 60px rgba(0, 0, 0, 0.5);
+  --shadow-float: 0 8px 26px rgba(0, 0, 0, 0.4);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+
+    --bg: #f6f4ef;
+    --surface: #ffffff;
+    --surface-2: #f0ece5;
+    --surface-3: #eae5da;
+    --border: #e5e0d6;
+    --border-strong: #d1c9ba;
+    --text: #262119;
+    --text-2: #5f5749;
+    --text-3: #8b8275;
+    --accent: #c25a26;
+    --accent-2: #a6401a;
+    --accent-ink: #ffffff;
+    --accent-soft: rgba(194, 90, 38, 0.1);
+    --accent-gradient: linear-gradient(135deg, #d0662e, #b5451d);
+    --focus-ring: rgba(194, 90, 38, 0.35);
+    --success: #1c8a52;
+    --glow-hot: rgba(194, 90, 38, 0.07);
+    --glow-cool: rgba(122, 96, 186, 0.06);
+    --dot: rgba(70, 56, 32, 0.05);
+    --shadow-pop: 0 24px 60px rgba(100, 80, 40, 0.18);
+    --shadow-float: 0 8px 26px rgba(100, 80, 40, 0.14);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-ui);
+  color: var(--text);
+  background: var(--bg);
+  background-image: radial-gradient(1100px 560px at 50% -12%, var(--glow-hot), transparent 62%),
+    radial-gradient(820px 540px at 112% 116%, var(--glow-cool), transparent 60%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.5px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(760px 440px at 50% -8%, black, transparent 72%);
+  mask-image: radial-gradient(760px 440px at 50% -8%, black, transparent 72%);
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+::placeholder {
+  color: var(--text-3);
+  opacity: 1;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  background-clip: content-box;
+  background-color: var(--border-strong);
+  border-radius: 99px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

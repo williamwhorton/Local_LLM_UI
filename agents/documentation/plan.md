@@ -58,7 +58,20 @@ I recommend **Svelte** or **React**.
 *   **Stream Piping:** Implement the logic to capture the `ReadableStream` from the upstream response and pipe it into the downstream response object.
 
 ### Phase 2: Frontend Development
-*   **UI Skeleton:** Create the chat window container, message bubbles (User vs. Assistant), and a sticky bottom input area.
+
+> **Status**: Step 1 (UI skeleton) is **COMPLETE** on branch `frontend/ui-scaffolding`.
+> It was built against the approved design system in `agents/documentation/design.md`
+> (visual reference: `design/mockup.html`) — app name "Local", warm charcoal/paper
+> palette with a single ember accent, dark default with light theme via
+> `prefers-color-scheme`, and `prefers-reduced-motion` honored. The Svelte 5 shell
+> (`App.svelte`) wires a topbar (`Header` with model-selector popover and status),
+> a scrollable message region (`MessageList` with the design empty state and
+> suggested-prompt chips), and the composer footer (`ChatInput` with hints and a
+> disabled-when-empty send button). Message state, streaming, and submission are
+> intentionally not implemented yet (Steps 2–4). Backend integration is provided
+> by the `feature/step-1-environment-setup` backend worktree.
+
+*   **UI Skeleton:** Create the chat window container, message bubbles (User vs. Assistant), and a sticky bottom input area. *(Step 1 complete — shell and empty state per the design system; bubbles arrive with Step 2.)*
 *   **Streaming Logic:** Implement a service to call the backend API using `fetch`. Use the `ReadableStream` interface to iterate over chunks as they arrive.
 *   **State Management:** Implement reactive state to append new tokens to the "current" message in the history without re-rendering the entire list.
 
