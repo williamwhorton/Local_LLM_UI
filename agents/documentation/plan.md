@@ -58,6 +58,9 @@ I recommend **Svelte** or **React**.
 *   **Stream Piping:** Implement the logic to capture the `ReadableStream` from the upstream response and pipe it into the downstream response object.
 
 ### Phase 2: Frontend Development
+**Status:** Design complete. See `agents/documentation/design.md` (styling spec) and `design/mockup.html` (static visual reference). Frontend scaffolding remains unstyled placeholder; the implementing agent should build the UI described in the spec.
+
+**Decisions:** Svelte 5 + Vite in a standalone `frontend/` subproject (own `package.json`, lockfile, tsconfig, Vitest/jsdom suite). Communication protocol between SPA and backend is undecided (SSE vs Fetch ReadableStream); the current layout componentizes `MessageList` (scrollable region) and `ChatInput` (bottom input bar) around that future streaming work.
 *   **UI Skeleton:** Create the chat window container, message bubbles (User vs. Assistant), and a sticky bottom input area.
 *   **Streaming Logic:** Implement a service to call the backend API using `fetch`. Use the `ReadableStream` interface to iterate over chunks as they arrive.
 *   **State Management:** Implement reactive state to append new tokens to the "current" message in the history without re-rendering the entire list.
