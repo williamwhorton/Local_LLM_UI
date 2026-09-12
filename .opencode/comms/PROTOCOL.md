@@ -131,4 +131,6 @@ template in `.opencode/docs/agent-template.md` — the only parts that change ar
 `description`, `permission`, and the "Task procedure" body. Never duplicate
 shared process (AGENTS.md is auto-loaded; the `agent-comms` skill auto-surfaces).
 
-Current role agents: `reviewer`, `backend-dev`, `frontend-dev`, `documenter`.
+Current role agents: `reviewer`, `backend-dev`, `frontend-dev`, `documenter`,
+plus the on-demand `designer` subagent that `frontend-dev` consults for
+design-system changes.

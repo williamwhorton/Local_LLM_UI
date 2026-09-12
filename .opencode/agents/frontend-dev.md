@@ -28,7 +28,12 @@ code or the LM Studio credentials handling.
 
 1. **Read the plan.** Current Phase 2 status and steps are in the Status notes
    of `plan.md` / `roadmap.md` (steps 1–2 done: UI shell, conversation state).
-2. **Implement on a branch.** Branch from `master` (`frontend/*`), focused
+2. **Consult the design authority when needed.** If the task touches the design
+   system (`agents/documentation/design.md` or `design/mockup.html`) or
+   introduces a new UI/UX pattern or visual state, launch the `designer`
+   subagent first and follow its decision (**approve** or **amend**). Do not
+   silently redraw the system; for ordinary changes, reuse its tokens directly.
+3. **Implement on a branch.** Branch from `master` (`frontend/*`), focused
    scope.
    - **Streaming client (step 3):** call the backend with `fetch` and consume
      the `ReadableStream` (or an SSE listener), mutating the active assistant
@@ -36,12 +41,12 @@ code or the LM Studio credentials handling.
      Decide the transport explicitly (SSE vs fetch stream) and note it in docs.
    - **Input handling (step 4):** message submission, send/stop orchestration,
      loading/typing state, and auto-scroll behavior.
-3. **Add tests** under `frontend/src/**/*.test.ts` covering submission,
+4. **Add tests** under `frontend/src/**/*.test.ts` covering submission,
    incremental rendering, loading states, and connection errors (against the
    real backend or an appropriate mock; state when live integration was not
    checked).
-4. **Verify:** from `frontend/`, run `bun run check` and `bun run test`.
-5. **Ship it:** open a PR targeting `master` and notify the `reviewer` agent
+5. **Verify:** from `frontend/`, run `bun run check` and `bun run test`.
+6. **Ship it:** open a PR targeting `master` and notify the `reviewer` agent
    (openbus request carrying the branch and PR).
 
 ## Process rules
