@@ -122,3 +122,13 @@ fields and writes envelopes atomically (temp file + rename).
 - Messages are committed to no git branch; the bus directory is never staged.
 - Presence (`who`) is advisory. If a recipient is away, leave the request
   `open` with `ttl_minutes`; do not silently assume delivery.
+
+## 8. Adding role agents
+
+Role agents are thin files in `.opencode/agents/<name>.md`. The name is the bus
+address (`to: <name>`), so it must match how you delegate. Start from the
+template in `.opencode/docs/agent-template.md` — the only parts that change are
+`description`, `permission`, and the "Task procedure" body. Never duplicate
+shared process (AGENTS.md is auto-loaded; the `agent-comms` skill auto-surfaces).
+
+Current role agents: `reviewer`, `backend-dev`, `frontend-dev`, `documenter`.
