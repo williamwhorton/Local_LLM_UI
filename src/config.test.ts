@@ -9,6 +9,7 @@ describe('loadConfig', () => {
       lmStudioUrl: 'http://127.0.0.1:1234',
       lmStudioApiKey: null,
       corsOrigin: true,
+      publicDir: 'public',
     })
   })
 
@@ -18,6 +19,7 @@ describe('loadConfig', () => {
       PORT: '8080',
       LM_STUDIO_URL: 'http://lm.local:9999',
       LM_STUDIO_API_KEY: ' secret ',
+      PUBLIC_DIR: ' assets ',
     })
     expect(config).toEqual({
       host: '0.0.0.0',
@@ -25,6 +27,7 @@ describe('loadConfig', () => {
       lmStudioUrl: 'http://lm.local:9999',
       lmStudioApiKey: 'secret',
       corsOrigin: true,
+      publicDir: 'assets',
     })
   })
 
@@ -42,6 +45,11 @@ describe('loadConfig', () => {
   it('allows any origin when CORS_ORIGIN is empty or missing', () => {
     expect(loadConfig({ CORS_ORIGIN: '' }).corsOrigin).toBe(true)
     expect(loadConfig({}).corsOrigin).toBe(true)
+  })
+
+  it('defaults PUBLIC_DIR to public when unset or blank', () => {
+    expect(loadConfig({}).publicDir).toBe('public')
+    expect(loadConfig({ PUBLIC_DIR: '  ' }).publicDir).toBe('public')
   })
 
   it('rejects a non-numeric PORT', () => {

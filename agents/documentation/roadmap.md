@@ -37,12 +37,13 @@ graph LR
 
 > **Implementation status:** Phase 1 is implemented step-by-step on reviewable branches merged to `master`.
 > Step 1 (environment setup) is **done**: Fastify server bootstrap (`src/app.ts`, `src/server.ts`), validated config module (`src/config.ts`), `.env.example` (using `LM_STUDIO_URL`, `LM_STUDIO_API_KEY`, `HOST`, `PORT`, `CORS_ORIGIN`), CORS, a `/health` route, and a Vitest suite. The backends steps below are implemented on `feature/step-*` branches.
+> Step 2 (static file serving) is **done**: pre-built assets are served from a `public` directory (`PUBLIC_DIR` env, default `public`) via `@fastify/static` when the directory exists.
 
 > **Status:** UI design is complete and captured in `agents/documentation/design.md` (styling spec) plus `design/mockup.html` (static mockup). The `frontend/` Svelte scaffold is placeholder styling awaiting implementation per the spec; live LM Studio streaming remains future work.
 
 ### Phase 1: Backend Foundation
 - [x] **Environment Setup**: Initialize Node.js project and install core dependencies (proxy, server framework).
-- [ ] **Static File Serving**: Implement the ability to serve pre-built frontend assets from a `public` directory.
+- [x] **Static File Serving**: Implement the ability to serve pre-built frontend assets from a `public` directory.
 - [ ] **LM Studio Integration**:
     * [ ] Implement request forwarding logic.
     * [ ] Configure API Key header injection for LM Studio authentication.
