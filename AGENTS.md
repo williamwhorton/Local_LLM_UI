@@ -1,20 +1,24 @@
 # Repository guidance
 
 ## Current state and scope
-- This repository hosts a LAN-accessible LM Studio chat SPA. The Fastify backend (`src/server.ts` with `src/app.ts`, `src/config.ts`) is implemented; the `src/index.ts` scaffold remains a console message. No chat endpoint, streaming, or frontend exists yet.
-- Read `agents/documentation/plan.md` and `agents/documentation/roadmap.md` before architecture work. They describe intended behavior and recommendations, not completed features.
-- The plans recommend a Node.js proxy backend, preferably Fastify, and a lightweight frontend, preferably Svelte. No framework is installed; keep implementation choices explicit and update the plans when decisions change.
+- This repository is a LAN-accessible LM Studio chat SPA in incremental development.
+- The backend (`src/`) is a Fastify server foundation: configuration loader, CORS, and a `/health` route. The LM Studio proxy and streaming endpoints are not implemented yet.
+- The frontend lives in `frontend/` and is a Svelte 5 + Vite single-page app. Phase 2 step 1 (UI scaffolding: scrollable message area + fixed bottom input bar) is implemented and unit-tested.
+- Read `agents/documentation/plan.md` and `agents/documentation/roadmap.md` before architecture work. They describe intended behavior and recommendations; treat their "Status" notes as the source of truth for what is done.
+- The plans recommend a Node.js proxy backend (Fastify, already chosen) and a Svelte frontend (Svelte 5, already chosen). Keep implementation choices explicit and update the plans when decisions change.
 
 ## Repository map
-- `src/`: TypeScript source included by the compiler.
-- `package.json`: package metadata, dependencies, and the build/test/start scripts.
+- `src/`: TypeScript backend source included by the compiler.
+- `frontend/`: standalone Svelte 5 + Vite app with its own `package.json`, `bun.lock`, `tsconfig.json`, and test suite.
+- `package.json`: backend package metadata, dependencies, and scripts.
 - `tsconfig.json`: strict TypeScript configuration; ES2016 target, CommonJS modules, output in `dist/`.
-- `bun.lock`: dependency lockfile. Use Bun for dependency management and keep this file synchronized with package changes.
+- `bun.lock`: backend dependency lockfile. Use Bun for dependency management and keep this file synchronized with package changes.
+- `vitest.config.mts`: backend test configuration.
 - `agents/documentation/`: project architecture and implementation plans.
 - `.idea/`: IDE metadata; avoid unrelated changes here.
 
 ## Development commands
-Run commands from the repository root:
+Run backend commands from the repository root:
 - `bun install`: install dependencies.
 - `bun run build`: compile TypeScript with the configured `tsc` script (output in `dist/`).
 - `bun run typecheck`: check types without generating output.
@@ -24,6 +28,14 @@ Run commands from the repository root:
 - `bun run test:watch`: run Vitest in watch mode.
 
 There is no lint script yet. Backend unit tests live next to sources as `*.test.ts` under `src/`; the Vitest config (`vitest.config.mts`) scopes the root test run to `src/**/*.test.ts` so it ignores the `frontend/` workspace and compiled `dist/`. Configuration is read from environment variables at startup (see `.env.example`); a config module (`src/config.ts`) validates and applies defaults. Do not run application tests from `dist/`.
+
+The frontend is a separate package. Run these from `frontend/`:
+- `bun install`: install frontend dependencies.
+- `bun run dev`: start the Vite dev server.
+- `bun run build`: produce static assets in `frontend/dist/`.
+- `bun run check`: run `svelte-check` types and diagnostics.
+- `bun run test`: run the frontend Vitest suite (jsdom).
+- `bun run preview`: serve the production build locally.
 
 ## Code promotion process
 Every change reaches `master` through a Pull Request. The process is the same for all agents, so changes are reviewable and mergeable in small, testable steps:
@@ -56,7 +68,7 @@ Multiple agents work on separate branches at the same time. To avoid collisions,
 - Keep application code in TypeScript with strict checking enabled. Follow nearby code style and avoid unrelated formatting changes.
 - Keep changes focused on the requested task and preserve existing staged, unstaged, and untracked user work.
 - Add dependencies only when needed for the implementation; update `package.json` and `bun.lock` together.
-- Do not hand-edit generated compiler output or commit `node_modules/` or `dist/`. The ignore file excludes `dist/`, `.air/`, and `node_modules/`, so check the working tree after builds for other stray artifacts.
+- Do not hand-edit generated compiler output or commit `node_modules/` or `dist/`. The ignore file excludes `dist/`, `.air/`, `node_modules/`, and `frontend/dist/`; check the working tree after builds for other stray artifacts.
 - Keep architecture documentation aligned with implemented behavior. Clearly distinguish future work from available functionality.
 
 ## Planned application boundaries

@@ -38,6 +38,8 @@ graph LR
 > **Implementation status:** Phase 1 is implemented step-by-step on reviewable branches merged to `master`.
 > Step 1 (environment setup) is **done**: Fastify server bootstrap (`src/app.ts`, `src/server.ts`), validated config module (`src/config.ts`), `.env.example` (using `LM_STUDIO_URL`, `LM_STUDIO_API_KEY`, `HOST`, `PORT`, `CORS_ORIGIN`), CORS, a `/health` route, and a Vitest suite. The backends steps below are implemented on `feature/step-*` branches.
 
+> **Status:** UI design is complete and captured in `agents/documentation/design.md` (styling spec) plus `design/mockup.html` (static mockup). The `frontend/` Svelte scaffold is placeholder styling awaiting implementation per the spec; live LM Studio streaming remains future work.
+
 ### Phase 1: Backend Foundation
 - [x] **Environment Setup**: Initialize Node.js project and install core dependencies (proxy, server framework).
 - [ ] **Static File Serving**: Implement the ability to serve pre-built frontend assets from a `public` directory.
@@ -48,6 +50,9 @@ graph LR
     * [ ] Set up Server-Sent Events (SSE) or Chunked Transfer Encoding to relay chunks from the LM Studio response stream directly to the client.
 
 ### Phase 2: Frontend Development
+**Status:** Step 1 (UI scaffolding) implemented on branch `frontend/ui-scaffolding` with unit tests. Steps 2-4 pending.
+
+> **Implementation decisions (Phase 2 step 1):** The frontend is **Svelte 5** using **Vite**, in a standalone `frontend/` subproject with its own `package.json`, `bun.lock`, `tsconfig.json`, and Vitest+jsdom test suite (`@testing-library/svelte`). The layout is a flex column: a scrollable message region (`MessageList`) and a bottom-sticky input bar (`ChatInput`) inside a viewport-height shell (`App`). Message submission, state, and streaming are future steps.
 1.  **UI Scaffolding**: Create a basic layout with a scrollable message area and a fixed bottom input bar.
 2.  **State Management**: Implement logic to manage the conversation history array (user messages vs. assistant messages).
 3.  **Streaming Client Logic**: 
