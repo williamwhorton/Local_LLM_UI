@@ -29,7 +29,17 @@ Every change reaches `master` through a Pull Request. The process is the same fo
 3. **Add unit tests covering the new code.** Follow the style of existing tests: backend tests are Vitest files under `src/**/*.test.ts`; frontend tests under `frontend/src/**/*.test.ts`. Go/no tests may be added alongside meaningful behavior. Documentation-only changes do not require application tests.
 4. **Run the checks.** Run the relevant type check or build and the test suite for the package you changed, and report any failures accurately.
 5. **Submit a Pull Request targeting `master`.** Summarize what the change does and how it was verified.
-6. **Merge to `master` only after review.** Do not self-merge; wait for another agent (or the maintainer) to review and approve.
+6. **Get the PR reviewed and merged.** The repository's designated review agent evaluates the change (see "Code review" below) and either approves and merges it or requests changes. Do not self-merge your own PR, and do not review your own work.
+
+### Code review
+The maintainer has delegated PR review and merging to a designated **review agent** (the agent that acts as this repository's reviewer). For every PR targeting `master`, the review agent:
+- Pulls the branch and reviews the diff against `master` for correctness, scope, and adherence to the conventions above.
+- Verifies with the checks: runs the type check or build and the relevant test suite when behavior changed, and confirms the PR adds unit tests covering the change (documentation-only changes are exempt).
+- Never merges a PR that fails checks, is missing required tests, or changes more than its stated scope.
+
+Outcomes:
+- **Approved and merged:** the review agent merges the PR into `master`, removes the now-merged branch, and notifies the maintainer with the PR number, a short summary, and how it was verified.
+- **Changes requested:** the review agent posts a review comment listing the specific required fixes and notifies the agent that owns the PR (the branch author) directly so they can update and resubmit.
 
 ### Working in parallel
 Multiple agents work on separate branches at the same time. To avoid collisions, conflicts, or overwritten code:
@@ -37,6 +47,7 @@ Multiple agents work on separate branches at the same time. To avoid collisions,
 - Keep `node_modules` and lockfiles inside each worktree. Ignore files are per-package: root `.gitignore` covers backend output and secrets; each package (e.g. `frontend/.gitignore`) ignores its own `node_modules/`, `dist/`, and `.env`. Check `git status` after builds and never stage ignored artifacts.
 - Agents running dev servers at the same time must not share ports (backend defaults to `127.0.0.1:3000`, Vite to `5173`); override `HOST`/`PORT` per run via a local, gitignored `.env`.
 - Shared files need discipline: update `package.json` and `bun.lock` together (reconcile with `bun install` when branches both add dependencies); update status notes in `agents/documentation/plan.md` and `roadmap.md` only on the branch that owns the change; avoid editing files another agent is actively working on.
+- The designated review agent works from `master` in the primary worktree, so feature branches are never blocked by the reviewer; agents coordinate with the reviewer before merging.
 
 ## Implementation conventions
 - Keep application code in TypeScript with strict checking enabled. Follow nearby code style and avoid unrelated formatting changes.
