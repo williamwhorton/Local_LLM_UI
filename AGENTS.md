@@ -22,6 +22,22 @@ Run commands from the repository root:
 
 There are currently no start, dev-server, lint, or test scripts. Do not report those checks as passing or assume the application can already be served. When adding tooling, add the corresponding scripts and document their usage.
 
+## Code promotion process
+Every change reaches `master` through a Pull Request. The process is the same for all agents, so changes are reviewable and mergeable in small, testable steps:
+1. **Branch from `master`.** Create a new branch for each work item or plan step, e.g. `feature/step-1-*`, `frontend/*`, `chore/*`, `docs/*`. Never commit directly to `master`.
+2. **Complete the work on that branch.** Keep the change focused on the requested task and preserve other agents' staged, unstaged, and untracked work. Always commit (or stash) before switching branches or ending a session.
+3. **Add unit tests covering the new code.** Follow the style of existing tests: backend tests are Vitest files under `src/**/*.test.ts`; frontend tests under `frontend/src/**/*.test.ts`. Go/no tests may be added alongside meaningful behavior. Documentation-only changes do not require application tests.
+4. **Run the checks.** Run the relevant type check or build and the test suite for the package you changed, and report any failures accurately.
+5. **Submit a Pull Request targeting `master`.** Summarize what the change does and how it was verified.
+6. **Merge to `master` only after review.** Do not self-merge; wait for another agent (or the maintainer) to review and approve.
+
+### Working in parallel
+Multiple agents work on separate branches at the same time. To avoid collisions, conflicts, or overwritten code:
+- Prefer one `git worktree` per branch so files on disk, `node_modules`, build artifacts, and uncommitted edits cannot collide (`git worktree add ../llm-ui-<branchOrAgent> <branch>`). Only the primary worktree holds `.idea/`.
+- Keep `node_modules` and lockfiles inside each worktree. Ignore files are per-package: root `.gitignore` covers backend output and secrets; each package (e.g. `frontend/.gitignore`) ignores its own `node_modules/`, `dist/`, and `.env`. Check `git status` after builds and never stage ignored artifacts.
+- Agents running dev servers at the same time must not share ports (backend defaults to `127.0.0.1:3000`, Vite to `5173`); override `HOST`/`PORT` per run via a local, gitignored `.env`.
+- Shared files need discipline: update `package.json` and `bun.lock` together (reconcile with `bun install` when branches both add dependencies); update status notes in `agents/documentation/plan.md` and `roadmap.md` only on the branch that owns the change; avoid editing files another agent is actively working on.
+
 ## Implementation conventions
 - Keep application code in TypeScript with strict checking enabled. Follow nearby code style and avoid unrelated formatting changes.
 - Keep changes focused on the requested task and preserve existing staged, unstaged, and untracked user work.
