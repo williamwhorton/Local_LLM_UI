@@ -43,7 +43,7 @@ Every change reaches `master` through a Pull Request. The process is the same fo
 2. **Complete the work on that branch.** Keep the change focused on the requested task and preserve other agents' staged, unstaged, and untracked work. Always commit (or stash) before switching branches or ending a session.
 3. **Add unit tests covering the new code.** Follow the style of existing tests: backend tests are Vitest files under `src/**/*.test.ts`; frontend tests under `frontend/src/**/*.test.ts`. Go/no tests may be added alongside meaningful behavior. Documentation-only changes do not require application tests.
 4. **Run the checks.** Run the relevant type check or build and the test suite for the package you changed, and report any failures accurately.
-5. **Submit a Pull Request targeting `master`.** Summarize what the change does and how it was verified.
+5. **Submit a Pull Request targeting `master` and notify the reviewer.** Create the PR against `master`, summarize what the change does and how it was verified, and explicitly notify the designated review agent that the branch is ready for review. A step is **not complete** until a PR is open and the review agent has been notified.
 6. **Get the PR reviewed and merged.** The repository's designated review agent evaluates the change (see "Code review" below) and either approves and merges it or requests changes. Do not self-merge your own PR, and do not review your own work.
 
 ### Code review
