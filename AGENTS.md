@@ -64,6 +64,9 @@ Multiple agents work on separate branches at the same time. To avoid collisions,
 - Shared files need discipline: update `package.json` and `bun.lock` together (reconcile with `bun install` when branches both add dependencies); update status notes in `agents/documentation/plan.md` and `roadmap.md` only on the branch that owns the change; avoid editing files another agent is actively working on.
 - The designated review agent works from `master` in the primary worktree, so feature branches are never blocked by the reviewer; agents coordinate with the reviewer before merging.
 
+### Agent-to-agent messaging (openbus)
+Agents communicate through the durable openbus mailbox (`.opencode/comms/`). Load the **`agent-comms` skill** and follow its check-in ritual: read the bus on session start, notice branch/PR state before switching or ending a session, and reply `result` when delegated work completes. Reference the protocol in `.opencode/comms/PROTOCOL.md`; wrap task handoffs to another agent (including review requests to the `reviewer` agent) in bus messages carrying the branch/PR.
+
 ## Implementation conventions
 - Keep application code in TypeScript with strict checking enabled. Follow nearby code style and avoid unrelated formatting changes.
 - Keep changes focused on the requested task and preserve existing staged, unstaged, and untracked user work.

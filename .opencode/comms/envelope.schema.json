@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://opencode.local/comms/envelope.schema.json",
+  "title": "openbus envelope",
+  "description": "The YAML frontmatter contract of every message on the openbus. A message is one Markdown file: this frontmatter plus a free-form body.",
+  "type": "object",
+  "required": ["id", "from", "to", "thread", "kind", "created"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "UUID identifying this message. Replies reference it via in_reply_to."
+    },
+    "from": {
+      "type": "string",
+      "description": "Agent name that wrote the message (no '@' prefix)."
+    },
+    "to": {
+      "type": "string",
+      "description": "Recipient agent name, a comma-separated list, or '*' for broadcast."
+    },
+    "thread": {
+      "type": "string",
+      "description": "Thread id grouping a logical exchange, e.g. 'review:step-2-state'."
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["request", "result", "question", "answer", "ack", "notice"]
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC ISO-8601 timestamp of publication."
+    },
+    "title": {
+      "type": "string",
+      "description": "One-line subject."
+    },
+    "in_reply_to": {
+      "type": "string",
+      "description": "id of the message being answered or acknowledged."
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["normal", "high"],
+      "default": "normal"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["open", "ack", "in_progress", "done", "failed", "expired"]
+    },
+    "branch": {
+      "type": "string",
+      "description": "Branch the message refers to."
+    },
+    "pr": {
+      "type": "string",
+      "description": "PR number or URL the message refers to."
+    },
+    "ttl_minutes": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Request expiry in minutes; recipients should mark expired requests beyond this."
+    },
+    "body": {
+      "type": "string",
+      "description": "The message body (from the Markdown file below the frontmatter)."
+    }
+  },
+  "additionalProperties": false
+}
