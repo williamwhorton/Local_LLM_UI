@@ -1,10 +1,12 @@
 <script lang="ts">
+  import { Conversation } from './lib/conversation.svelte'
   import ChatInput from './lib/components/ChatInput.svelte'
   import Header from './lib/components/Header.svelte'
   import MessageList from './lib/components/MessageList.svelte'
   import { MODELS } from './lib/models'
 
   let modelName = $state(MODELS[0].name)
+  const conversation = new Conversation()
 </script>
 
 <svelte:head>
@@ -15,7 +17,7 @@
   <Header modelName={modelName} modelOptions={MODELS} onSelectModel={(name) => (modelName = name)} />
 
   <main class="main">
-    <MessageList {modelName} />
+    <MessageList {modelName} messages={conversation.messages} />
   </main>
 
   <footer class="footer">

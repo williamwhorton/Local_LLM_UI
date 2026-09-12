@@ -39,7 +39,7 @@ graph LR
 > Step 1 (environment setup) is **done**: Fastify server bootstrap (`src/app.ts`, `src/server.ts`), validated config module (`src/config.ts`), `.env.example` (using `LM_STUDIO_URL`, `LM_STUDIO_API_KEY`, `HOST`, `PORT`, `CORS_ORIGIN`), CORS, a `/health` route, and a Vitest suite. The backends steps below are implemented on `feature/step-*` branches.
 > Step 2 (static file serving) is **done**: pre-built assets are served from a `public` directory (`PUBLIC_DIR` env, default `public`) via `@fastify/static` when the directory exists.
 
-> **Status:** UI design is complete and captured in `agents/documentation/design.md` (styling spec) plus `design/mockup.html` (static mockup). The `frontend/` Svelte scaffold is placeholder styling awaiting implementation per the spec; live LM Studio streaming remains future work.
+> **Status:** UI design is complete and captured in `agents/documentation/design.md` (styling spec) plus `design/mockup.html` (static mockup). The `frontend/` Svelte app implements the approved design system through Phase 2 step 2 (see below); live LM Studio streaming remains future work.
 
 ### Phase 1: Backend Foundation
 - [x] **Environment Setup**: Initialize Node.js project and install core dependencies (proxy, server framework).
@@ -51,22 +51,32 @@ graph LR
     * [ ] Set up Server-Sent Events (SSE) or Chunked Transfer Encoding to relay chunks from the LM Studio response stream directly to the client.
 
 ### Phase 2: Frontend Development
-> **Status (Phase 2)**: Fresh as of the phase; step-by-step progress is tracked below beside each step.
+> **Status (Phase 2)**: Step 1 is done; step-by-step progress is tracked below beside each step.
 >
-> **Step 1 — UI Scaffolding: COMPLETE** (branch `frontend/ui-scaffolding`).
+> **Step 1 — UI Scaffolding: COMPLETE** (branch `frontend/ui-scaffolding`, merged).
 > Implemented as the approved design-system baseline defined in
 > `agents/documentation/design.md` with the visual reference `design/mockup.html`.
 > The Svelte 5 app shell (`App.svelte`) renders a topbar (`Header`), a scrollable
 > message region with the design empty state (`MessageList`), and the composer
 > footer (`ChatInput`). Model selection opens a popover listbox; the composer
-> disables send while empty. No conversation state, streaming, or submission
-> logic yet — those are Steps 2–4 below. Unit tests, `svelte-check`, and the
-> production build pass (16 tests / 0 diagnostics).
+> disables send while empty.
+>
+> **Step 2 — State Management: COMPLETE** (branch `frontend/step-2-state`).
+> Introduced `frontend/src/lib/conversation.svelte.ts`, a Svelte 5 runes
+> `Conversation` store managing the history array of `ChatMessage`s (user vs
+> assistant, each with `status`: active/complete/stopped). `MessageList` now
+> renders the thread per §6.3: a day divider, assistant rows with a spark avatar
+> and surface bubble, right-aligned user bubbles on `--accent-soft`, raw
+> `pre-wrap` text, a blinking caret on `active` messages, and a dashed
+> "Generation stopped" pill on `stopped` ones. The empty state remains when the
+> history is empty. No submission, streaming, or markdown-lite formatting yet —
+> those are Steps 3–4. `Conversation` exposes append/update/complete/stop/
+> regenerate/clear for the forthcoming send and stream logic.
 
 > **Implementation decisions (Phase 2 step 1):** The frontend is **Svelte 5** using **Vite**, in a standalone `frontend/` subproject with its own `package.json`, `bun.lock`, `tsconfig.json`, and Vitest+jsdom test suite (`@testing-library/svelte`). The layout is a flex column: a scrollable message region (`MessageList`) and a bottom-sticky input bar (`ChatInput`) inside a viewport-height shell (`App`). Message submission, state, and streaming are future steps.
 
 1.  **UI Scaffolding**: Create a basic layout with a scrollable message area and a fixed bottom input bar. *(COMPLETE — design-system baseline, see above.)*
-2.  **State Management**: Implement logic to manage the conversation history array (user messages vs. assistant messages).
+2.  **State Management**: Implement logic to manage the conversation history array (user messages vs. assistant messages). *(COMPLETE — `Conversation` runes store + thread rendering on `frontend/step-2-state`.)*
 3.  **Streaming Client Logic**: 
     *   Use `fetch` API with `ReadableStream` or an `EventSource` listener to process incoming text chunks.
       * Ensure UI updates incrementally as tokens arrive.
