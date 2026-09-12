@@ -52,13 +52,14 @@ I recommend **Svelte** or **React**.
 ## 3. Implementation Roadmap
 
 ### Phase 1: Backend Foundation
-*   **Environment Configuration:** Setup `.env` for `LM_STUDIO_URL` and `LM_STUDIO_API_KEY`.
-*   **Server Setup:** Initialize Fastify server with CORS enabled (to allow LAN access).
-*   **Proxy Implementation:** Create a POST endpoint `/api/chat` that uses `undici` or `node-fetch` to forward requests to LM Studio. 
-*   **Stream Piping:** Implement the logic to capture the `ReadableStream` from the upstream response and pipe it into the downstream response object.
+> **Status:** Step 1 (server setup + environment configuration) is done. Steps below are implemented on `feature/step-*` branches merged to `master` after review.
+
+- [x] **Environment Configuration:** Setup `.env` for `LM_STUDIO_URL` and `LM_STUDIO_API_KEY`. Implemented in `src/config.ts`, validated at startup (`src/server.ts`), with `HOST`, `PORT`, and `CORS_ORIGIN` also configurable (see `.env.example`).
+- [x] **Server Setup:** Initialize Fastify server with CORS enabled (to allow LAN access). Implemented in `src/app.ts`; exposes `GET /health`.
+- [ ] **Proxy Implementation:** Create a POST endpoint `/api/chat` that uses `undici` or `node-fetch` to forward requests to LM Studio.
+- [ ] **Stream Piping:** Implement the logic to capture the `ReadableStream` from the upstream response and pipe it into the downstream response object.
 
 ### Phase 2: Frontend Development
-
 > **Status**: Step 1 (UI skeleton) is **COMPLETE** on branch `frontend/ui-scaffolding`.
 > It was built against the approved design system in `agents/documentation/design.md`
 > (visual reference: `design/mockup.html`) — app name "Local", warm charcoal/paper
@@ -70,6 +71,8 @@ I recommend **Svelte** or **React**.
 > disabled-when-empty send button). Message state, streaming, and submission are
 > intentionally not implemented yet (Steps 2–4). Backend integration is provided
 > by the `feature/step-1-environment-setup` backend worktree.
+
+**Decisions (Phase 2):** Svelte 5 + Vite in a standalone `frontend/` subproject (own `package.json`, lockfile, tsconfig, Vitest/jsdom suite). Communication protocol between SPA and backend is undecided (SSE vs Fetch `ReadableStream`); the current layout componentizes `MessageList` (scrollable region) and `ChatInput` (bottom input bar) around that future streaming work.
 
 *   **UI Skeleton:** Create the chat window container, message bubbles (User vs. Assistant), and a sticky bottom input area. *(Step 1 complete — shell and empty state per the design system; bubbles arrive with Step 2.)*
 *   **Streaming Logic:** Implement a service to call the backend API using `fetch`. Use the `ReadableStream` interface to iterate over chunks as they arrive.

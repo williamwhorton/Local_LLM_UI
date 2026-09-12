@@ -4,11 +4,21 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start": "bun run src/server.ts",
+    "dev": "bun --watch src/server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@fastify/cors": "^11.3.0",
+    "fastify": "^5.12.4"
+  },
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "@types/node": "^22.20.2",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.0"
   },
   "private": true
 }

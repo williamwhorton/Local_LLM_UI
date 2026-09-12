@@ -35,17 +35,21 @@ graph LR
 
 ## Development Plan
 
+> **Implementation status:** Phase 1 is implemented step-by-step on reviewable branches merged to `master`.
+> Step 1 (environment setup) is **done**: Fastify server bootstrap (`src/app.ts`, `src/server.ts`), validated config module (`src/config.ts`), `.env.example` (using `LM_STUDIO_URL`, `LM_STUDIO_API_KEY`, `HOST`, `PORT`, `CORS_ORIGIN`), CORS, a `/health` route, and a Vitest suite. The backends steps below are implemented on `feature/step-*` branches.
+
+> **Status:** UI design is complete and captured in `agents/documentation/design.md` (styling spec) plus `design/mockup.html` (static mockup). The `frontend/` Svelte scaffold is placeholder styling awaiting implementation per the spec; live LM Studio streaming remains future work.
+
 ### Phase 1: Backend Foundation
-1.  **Environment Setup**: Initialize Node.js project and install core dependencies (proxy, server framework).
-2.  **Static File Serving**: Implement the ability to serve pre-built frontend assets from a `public` directory.
-3.  **LM Studio Integration**:
-    *   Implement request forwarding logic.
-    *   Configure API Key header injection for LM Studio authentication.
-4.  **Streaming Implementation**: 
-    *   Set up Server-Sent Events (SSE) or Chunked Transfer Encoding to relay chunks from the LM Studio response stream directly to the client.
+- [x] **Environment Setup**: Initialize Node.js project and install core dependencies (proxy, server framework).
+- [ ] **Static File Serving**: Implement the ability to serve pre-built frontend assets from a `public` directory.
+- [ ] **LM Studio Integration**:
+    * [ ] Implement request forwarding logic.
+    * [ ] Configure API Key header injection for LM Studio authentication.
+- [ ] **Streaming Implementation**:
+    * [ ] Set up Server-Sent Events (SSE) or Chunked Transfer Encoding to relay chunks from the LM Studio response stream directly to the client.
 
 ### Phase 2: Frontend Development
-
 > **Status (Phase 2)**: Fresh as of the phase; step-by-step progress is tracked below beside each step.
 >
 > **Step 1 — UI Scaffolding: COMPLETE** (branch `frontend/ui-scaffolding`).
@@ -57,6 +61,8 @@ graph LR
 > disables send while empty. No conversation state, streaming, or submission
 > logic yet — those are Steps 2–4 below. Unit tests, `svelte-check`, and the
 > production build pass (16 tests / 0 diagnostics).
+
+> **Implementation decisions (Phase 2 step 1):** The frontend is **Svelte 5** using **Vite**, in a standalone `frontend/` subproject with its own `package.json`, `bun.lock`, `tsconfig.json`, and Vitest+jsdom test suite (`@testing-library/svelte`). The layout is a flex column: a scrollable message region (`MessageList`) and a bottom-sticky input bar (`ChatInput`) inside a viewport-height shell (`App`). Message submission, state, and streaming are future steps.
 
 1.  **UI Scaffolding**: Create a basic layout with a scrollable message area and a fixed bottom input bar. *(COMPLETE — design-system baseline, see above.)*
 2.  **State Management**: Implement logic to manage the conversation history array (user messages vs. assistant messages).
