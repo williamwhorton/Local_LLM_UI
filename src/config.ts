@@ -4,12 +4,14 @@ export interface Config {
   readonly lmStudioUrl: string
   readonly lmStudioApiKey: string | null
   readonly corsOrigin: true | string[]
+  readonly publicDir: string
 }
 
 const DEFAULTS = {
   HOST: '127.0.0.1',
   PORT: '3000',
   LM_STUDIO_URL: 'http://127.0.0.1:1234',
+  PUBLIC_DIR: 'public',
 } as const
 
 function parsePort(raw: string | undefined): number {
@@ -57,6 +59,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     lmStudioUrl: parseLmStudioUrl(env.LM_STUDIO_URL),
     lmStudioApiKey,
     corsOrigin: parseCorsOrigin(env.CORS_ORIGIN),
+    publicDir: env.PUBLIC_DIR?.trim() || DEFAULTS.PUBLIC_DIR,
   }
   return Object.freeze(config)
 }
