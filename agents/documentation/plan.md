@@ -60,23 +60,34 @@ I recommend **Svelte** or **React**.
 - [ ] **Stream Piping:** Implement the logic to capture the `ReadableStream` from the upstream response and pipe it into the downstream response object.
 
 ### Phase 2: Frontend Development
-> **Status**: Step 1 (UI skeleton) is **COMPLETE** on branch `frontend/ui-scaffolding`.
-> It was built against the approved design system in `agents/documentation/design.md`
+> **Status**: Step 1 (UI skeleton) is **COMPLETE** (merged, branch `frontend/ui-scaffolding`).
+> Built against the approved design system in `agents/documentation/design.md`
 > (visual reference: `design/mockup.html`) — app name "Local", warm charcoal/paper
 > palette with a single ember accent, dark default with light theme via
 > `prefers-color-scheme`, and `prefers-reduced-motion` honored. The Svelte 5 shell
 > (`App.svelte`) wires a topbar (`Header` with model-selector popover and status),
-> a scrollable message region (`MessageList` with the design empty state and
-> suggested-prompt chips), and the composer footer (`ChatInput` with hints and a
-> disabled-when-empty send button). Message state, streaming, and submission are
-> intentionally not implemented yet (Steps 2–4). Backend integration is provided
-> by the `feature/step-1-environment-setup` backend worktree.
+> a scrollable message region, and the composer footer (`ChatInput` with hints and
+> a disabled-when-empty send button).
+>
+> **Step 2 (State Management): COMPLETE** on branch `frontend/step-2-state`.
+> Added `frontend/src/lib/conversation.svelte.ts`: a Svelte 5 runes `Conversation`
+> store holding the history array of `ChatMessage` objects (`role: 'user' |
+> 'assistant'`, `status: 'active' | 'complete' | 'stopped'`) with an API for
+> appending user/assistant messages, streamed-content updates, complete/stop,
+> regenerate, and clear. `App.svelte` owns a `Conversation` instance and passes
+> `messages` into `MessageList`, which now renders the thread (day divider,
+> assistant avatar + bubble, right-aligned user bubbles, `pre-wrap` text, blinking
+> caret for `active`, dashed "Generation stopped" pill for `stopped`) while the
+> empty state still shows for a fresh conversation. Markdown-lite `format.ts`,
+> streaming (`stream.ts`), and send/stop orchestration remain future (Steps 3–4).
+> Backend Phase 1 foundation lives on `feature/step-*` branches; the proxy and
+> streaming endpoints are not implemented yet.
 
-**Decisions (Phase 2):** Svelte 5 + Vite in a standalone `frontend/` subproject (own `package.json`, lockfile, tsconfig, Vitest/jsdom suite). Communication protocol between SPA and backend is undecided (SSE vs Fetch `ReadableStream`); the current layout componentizes `MessageList` (scrollable region) and `ChatInput` (bottom input bar) around that future streaming work.
+**Decisions (Phase 2):** Svelte 5 + Vite in a standalone `frontend/` subproject (own `package.json`, lockfile, tsconfig, Vitest/jsdom suite). Conversation history is a runes store (`conversation.svelte.ts`) with user/assistant messages and per-message status, owned by `App` and consumed by `MessageList`; streaming content mutates the active assistant message in place. Communication protocol between SPA and backend is undecided (SSE vs Fetch `ReadableStream`).
 
-*   **UI Skeleton:** Create the chat window container, message bubbles (User vs. Assistant), and a sticky bottom input area. *(Step 1 complete — shell and empty state per the design system; bubbles arrive with Step 2.)*
+*   **State Management:** Implement reactive state to append new tokens to the "current" message in the history without re-rendering the entire list. *(Step 2 complete — `Conversation` store + thread rendering; token appends land with Step 3.)*
+*   **UI Skeleton:** Create the chat window container, message bubbles (User vs. Assistant), and a sticky bottom input area. *(Step 1 complete — shell and empty state per the design system; bubbles now render in Step 2.)*
 *   **Streaming Logic:** Implement a service to call the backend API using `fetch`. Use the `ReadableStream` interface to iterate over chunks as they arrive.
-*   **State Management:** Implement reactive state to append new tokens to the "current" message in the history without re-rendering the entire list.
 
 ### Phase 3: LAN Deployment & Testing
 *   **Network Binding:** Configure the Node.js server to listen on `0.0.0.0` instead of `localhost`.
