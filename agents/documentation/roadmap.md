@@ -35,14 +35,17 @@ graph LR
 
 ## Development Plan
 
+> **Implementation status:** Phase 1 is implemented step-by-step on reviewable branches merged to `master`.
+> Step 1 (environment setup) is **done**: Fastify server bootstrap (`src/app.ts`, `src/server.ts`), validated config module (`src/config.ts`), `.env.example` (using `LM_STUDIO_URL`, `LM_STUDIO_API_KEY`, `HOST`, `PORT`, `CORS_ORIGIN`), CORS, a `/health` route, and a Vitest suite. The backends steps below are implemented on `feature/step-*` branches.
+
 ### Phase 1: Backend Foundation
-1.  **Environment Setup**: Initialize Node.js project and install core dependencies (proxy, server framework).
-2.  **Static File Serving**: Implement the ability to serve pre-built frontend assets from a `public` directory.
-3.  **LM Studio Integration**:
-    *   Implement request forwarding logic.
-    *   Configure API Key header injection for LM Studio authentication.
-4.  **Streaming Implementation**: 
-    *   Set up Server-Sent Events (SSE) or Chunked Transfer Encoding to relay chunks from the LM Studio response stream directly to the client.
+- [x] **Environment Setup**: Initialize Node.js project and install core dependencies (proxy, server framework).
+- [ ] **Static File Serving**: Implement the ability to serve pre-built frontend assets from a `public` directory.
+- [ ] **LM Studio Integration**:
+    * [ ] Implement request forwarding logic.
+    * [ ] Configure API Key header injection for LM Studio authentication.
+- [ ] **Streaming Implementation**:
+    * [ ] Set up Server-Sent Events (SSE) or Chunked Transfer Encoding to relay chunks from the LM Studio response stream directly to the client.
 
 ### Phase 2: Frontend Development
 1.  **UI Scaffolding**: Create a basic layout with a scrollable message area and a fixed bottom input bar.

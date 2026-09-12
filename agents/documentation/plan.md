@@ -52,10 +52,12 @@ I recommend **Svelte** or **React**.
 ## 3. Implementation Roadmap
 
 ### Phase 1: Backend Foundation
-*   **Environment Configuration:** Setup `.env` for `LM_STUDIO_URL` and `LM_STUDIO_API_KEY`.
-*   **Server Setup:** Initialize Fastify server with CORS enabled (to allow LAN access).
-*   **Proxy Implementation:** Create a POST endpoint `/api/chat` that uses `undici` or `node-fetch` to forward requests to LM Studio. 
-*   **Stream Piping:** Implement the logic to capture the `ReadableStream` from the upstream response and pipe it into the downstream response object.
+> **Status:** Step 1 (server setup + environment configuration) is done. Steps below are implemented on `feature/step-*` branches merged to `master` after review.
+
+- [x] **Environment Configuration:** Setup `.env` for `LM_STUDIO_URL` and `LM_STUDIO_API_KEY`. Implemented in `src/config.ts`, validated at startup (`src/server.ts`), with `HOST`, `PORT`, and `CORS_ORIGIN` also configurable (see `.env.example`).
+- [x] **Server Setup:** Initialize Fastify server with CORS enabled (to allow LAN access). Implemented in `src/app.ts`; exposes `GET /health`.
+- [ ] **Proxy Implementation:** Create a POST endpoint `/api/chat` that uses `undici` or `node-fetch` to forward requests to LM Studio.
+- [ ] **Stream Piping:** Implement the logic to capture the `ReadableStream` from the upstream response and pipe it into the downstream response object.
 
 ### Phase 2: Frontend Development
 *   **UI Skeleton:** Create the chat window container, message bubbles (User vs. Assistant), and a sticky bottom input area.
